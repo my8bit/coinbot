@@ -27,7 +27,8 @@
   "dependencies": {
     "express": "3.4.7",
     "socket.io": "latest",
-    "jade": "*"
+    "jade": "*",
+    "btc-e": "latest"
   },
   "devDependencies": {},
   "bundleDependencies": [],
