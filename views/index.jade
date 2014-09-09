@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  //h1= title
+  //p Welcome to #{title}
+  .container
+    .page-header 
+        h1 Coinbot
+        h4 Opensource bot for btc-e
+        h5(id='currency') Here should be the curret currency
+    .row
+        .col-xs-6 
+            p Buy coins
+            p
+              input(type='text', id='buyAmount', placeholder='Amount of coins …')
+            p
+              input(type='text', id='buyPrice', placeholder='Price …')
+            p
+              button.btn.btn-sm.btn-info(type='button') Buy
+        .col-xs-6 
+            p Sell coins
+            p
+              input(type='text', id='sellAmount', placeholder='Amount of coins …')
+            p
+              input(type='text', id='sellPrice', placeholder='Price …')
+            p
+              button.btn.btn-sm.btn-info(type='button') Sell
+
