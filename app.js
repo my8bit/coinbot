@@ -12,7 +12,7 @@ var path = require('path');
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
@@ -33,7 +33,7 @@ app.get('/getTicket', routes.getTicket);
 
 app.get('/users', user.list);
 
-var server = app.listen(3000);
+var server = app.listen(process.env.OPENSHIFT_NODEJS_PORT || 3000);
 
 //TODO realy stupid name - refactor
 var buySellFn = require('./buysellfn');
