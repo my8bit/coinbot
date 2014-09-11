@@ -3,11 +3,12 @@
  * Module dependencies.
  */
 
-var express    = require('express');
+var express= require('express');
 var routes = require('./routes');
 var user   = require('./routes/user');
 var http   = require('http');
 var path   = require('path');
+var buySellFn = require('./buysellfn');
 
 var app = express();
 var server = http.createServer(app);
@@ -35,15 +36,7 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/getTicket', routes.getTicket);
 
-app.get('/users', user.list);
-
-/*var server = */
-//app.listen(process.env.OPENSHIFT_NODEJS_PORT);
-console.log(process.env.OPENSHIFT_NODEJS_PORT);
-console.log(process.env.OPENSHIFT_NODEJS_IP);
-//var server = app.listen();
-
 //TODO realy stupid name - refactor
-var buySellFn = require('./buysellfn');
 buySellFn.init(server);
+
 server.listen(app.get('port'), app.get('ipaddress'));
