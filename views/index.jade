@@ -1,28 +1,88 @@
 extends layout
 
-block content
+block header
   //h1= title
   //p Welcome to #{title}
-  .container
-    .page-header 
-        h1 Coinbot
-        h4 Opensource bot for btc-e
-        h5(id='currency') Here should be the curret currency
-    .row
-        .col-xs-6 
-            p Buy coins
-            p
-              input(type='text', id='buyAmount', placeholder='Amount of coins …')
-            p
-              input(type='text', id='buyPrice', placeholder='Price …')
-            p
-              button.btn.btn-sm.btn-info(type='button') Buy
-        .col-xs-6 
-            p Sell coins
-            p
-              input(type='text', id='sellAmount', placeholder='Amount of coins …')
-            p
-              input(type='text', id='sellPrice', placeholder='Price …')
-            p
-              button.btn.btn-sm.btn-info(type='button') Sell
+  .page-header 
+    h4 Coinbot. Opensource bot for btc-e
+    h5(id='currency') Here is the currency (LTC/USD) at the moment
+
+block manualTrade
+  h4(id='toggleManualBuy') Manual buy / sell coins here 
+  .row.manualTrade
+    .col-xs-6.col-sm-3
+      p Calculate the profit with buying some coins:
+      p(class='input-group input-group-sm col-lg-12')
+        input(type='text', class='form-control calcFields' id='buyPriceCalc', placeholder='Amount of coins to buy ..')
+      p(class='input-group input-group-sm col-lg-12')
+        input(type='text', class='form-control calcFields' id='priceCalc', placeholder='At the price ...')
+      p(class='input-group input-group-sm col-lg-12')
+        input(type='text', class='form-control calcFields' id='sellPriceCalc', placeholder='At the price ...')
+    .col-xs-6.col-sm-3.calcResults 
+      p Results of calculation:
+      p
+        div Profit treshhold:
+          span(id='treshHold')
+      p
+        div Money spend:
+          span(id='moneySpend')
+      p
+        div Money recieved:
+          span(id='moneyRcivd')
+      p
+        div Profit / Loss:
+          span(id='profitLoss')
+    .col-xs-6.col-sm-3
+      p Buy coins
+      p(class='input-group input-group-sm col-lg-12')
+        input(type='text', class='form-control', id='buyAmount', placeholder='Amount of coins …')
+      p(class='input-group input-group-sm col-lg-12')
+        input(type='text', class='form-control', id='buyPrice', placeholder='Price …')
+      p
+        button.btn.btn-sm.btn-info.col-lg-12(type='button') Buy
+    .col-xs-6.col-sm-3
+      p Sell coins
+        p(class='input-group input-group-sm col-lg-12')
+          input(type='text', class='form-control', id='sellAmount', placeholder='Amount of coins …')
+        p(class='input-group input-group-sm col-lg-12')
+          input(type='text', class='form-control', id='sellPrice', placeholder='Price …')
+        p
+          button.btn.btn-sm.btn-info.col-lg-12(type='button') Sell
+
+//block calculator
+  h4(id='toggleCalculator') Calculator 
+  .row.calcInputs
+    .col-xs-6
+      p Calculate the profit with buying some coins:
+      p(class='input-group input-group-sm col-lg-6')
+        input(type='text', class='form-control calcFields' id='buyPriceCalc', placeholder='Amount of coins to buy ..')
+      p(class='input-group input-group-sm col-lg-6')
+        input(type='text', class='form-control calcFields' id='priceCalc', placeholder='At the price ...')
+      p(class='input-group input-group-sm col-lg-6')
+        input(type='text', class='form-control calcFields' id='sellPriceCalc', placeholder='At the price ...')
+    .col-xs-6.calcResults 
+      p Results of calculation:
+      p
+        div Profit treshhold:
+          span(id='treshHold')
+      p
+        div Money spend:
+          span(id='moneySpend')
+      p
+        div Money recieved:
+          span(id='moneyRcivd')
+      p
+        div Profit / Loss:
+          span(id='profitLoss')
+
+block autorules
+  h4(id='toggleRules') Automatic rules 
+  p.autoRules
+    textarea(class='form-control' rows="5")
+
+block chart
+  h4(id='toggleChart') Embedded chart 
+  p
+    div#embeddedChart hello
+
 

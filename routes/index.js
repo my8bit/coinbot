@@ -1,4 +1,3 @@
-
 /*
  * GET home page.
  */
@@ -12,15 +11,17 @@ exports.getTicket = function(n) {
     };
 };
 
-exports.index = function(req, res){
+exports.index = function(req, res) {
     // var io = require('socket.io').listen(server); // this tells socket.io to use our express server
-    
-/*    io.sockets.on('connection', function (socket) {
+
+    /*    io.sockets.on('connection', function (socket) {
         console.log('A new user connected!');
         socket.emit('info', { msg: 'The world is round, there is no up or down.' });
     });
 */
-    
-    res.render('index', { title: 'Express' });
+
+    res.render('index', {
+        title: 'Express'
+    });
 
 };

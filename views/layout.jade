@@ -2,7 +2,14 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/lumen.min.css')
+    link(rel='stylesheet', href='/stylesheets/main.css')
     script(data-main='javascripts/app', src='javascripts/requirejs/require.js')
+    script(data-main='javascripts/app', src='https://d33t3vvu2t2yu5.cloudfront.net/tv.js')
   body
-    block content
+    .container
+      block header
+      block chart
+      block manualTrade
+      block calculator
+      block autorules

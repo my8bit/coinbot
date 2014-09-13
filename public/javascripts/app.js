@@ -1,52 +1,128 @@
+'use strict';
+
 require.config({
     paths: {
-        "jquery": "jquery/dist/jquery.min",
-        "bootstrap": "bootstrap/dist/js/bootstrap.min",
-        "socketio": "../socket.io/socket.io"
+        'jquery': 'jquery/dist/jquery.min',
+        'bootstrap': 'bootstrap/dist/js/bootstrap.min',
+        'socketio': '../socket.io/socket.io',
+        'calculator': 'calculator/calculator',
+        'manualTrade': 'manualTrade/manualTrade'
     },
     shim: {
-        "bootstrap": { deps: ["jquery"] }
+        'bootstrap': {
+            deps: ['jquery']
+        }
     }
 });
 
 
 requirejs([
-    'jquery', 
+    'jquery',
     'bootstrap',
     'socketio',
-    ], function($, bootstrap, socketio){
-        //this is where all the site code should begin
-        //var socket = socketio.connect(); 
-        var io = socketio();
-        var socket = io.connect(); 
-//      console.log(socketio);
-        // if we get an "info" emit from the socket server then console.log the data we recive
-        socket.on('info', function (data) {
+    'calculator',
+    'manualTrade'
+], function($, bootstrap, socketio, calculator, manualTrade) {
+    //this is where all the site code should begin
+    //var socket = socketio.connect(); 
+
+    /*
+     * Probably need to move on separate module
+     * Some general UI
+     */
+    (function() {
+        $(generalUI);
+
+        function generalUI() {
+            /*
+            var manualTrade = $('.manualTrade');
+            var calcInputs = $('.calcInputs');
+            var autoRules = $('.autoRules');
+
+            var toggleRulesButton = $('#toggleRules');
+            var toggleManualBuyButton = $('#toggleManualBuy');
+            var toggleCalculatorButton = $('#toggleCalculator');
+            */
+
+            setToggle($('#toggleManualBuy'), $('.manualTrade'));
+            //setToggle($('#toggleCalculator'), $('.calcInputs'));
+            setToggle($('#toggleRules'), $('.autoRules'));
+            setToggle($('#toggleChart'), $('#embeddedChart'));
+
+            function setToggle(toggleButton, toggleTarget) {
+                toggleButton.click(function() {
+                    toggleTarget.slideToggle('slow');
+                });
+            }
+        }
+
+    })();
+
+    calculator.init();
+    manualTrade.init();
+
+    /*
+     * CHART MODULE
+     *
+     */
+
+    (function() {
+        $(installWidget);
+
+        function installWidget() {
+            //var TradingView = TradingView || {};
+            //delete widows.TradingView;
+            new TradingView.widget({
+                'container_id': 'embeddedChart',
+                'width': 1170,
+                'height': 288,
+                'symbol': 'LTCUSD',
+                'interval': '1',
+                'timezone': 'exchange',
+                'theme': 'White',
+                'style': '1',
+                'toolbar_bg': '#f1f3f6',
+                'allow_symbol_change': true,
+                'hideideas': true,
+                'show_popup_button': true,
+                'popup_width': '1000',
+                'popup_height': '650'
+            });
+        }
+    })();
+
+    /*
+     * TURN OFF SOCKET WHILE FRONT-END
+     *
+    var io = socketio();
+    var socket = io.connect();
+
+    // if we get an 'info' emit from the socket server then console.log the data we recive
+    socket.on('info', function(data) {
+        console.log(data);
+    });
+
+    socket.on('connect', function(data) {
+        console.log('connected ' + data);
+        //            socket.emit('fromClient', { msg: 'Emitted from client' });
+    });
+
+    function onload() {
+
+        socket.on('toClient', function(data) {
             console.log(data);
         });
-        socket.on('connect', function(data) {
-            console.log('connected');
-//            socket.emit('fromClient', { msg: "Emitted from client" });
+        socket.emit('fromClient', {
+            msg: 'Emitted from client'
+        });
+        socket.on('updateCurrency', function(data) {
+            //console.log(data);
+            $('#currency').text('Currency is - ' + data.cur.ticker.last);
         });
 
-        function onload (argument) {
-            socket.on('toClient', function (data) { console.log(data); });
-            socket.emit('fromClient', { msg: "Emitted from client" });
-            socket.on('updateCurrency', function(data) {
-                //console.log(data);
-                $('#currency').text("Currency is - " +  data.cur.ticker.last)
-            });
- /*           socket.emit('getCur', function(answr) {
-                answr.on('updateCurrency', function(data) {
-                    console.log(data);
-                    //$('#currency').text()
-                });
-                //console.log(data);
-                //$('#currency').text()
-            });          
- */       }
-        $(onload);
+    }
 
-        console.log("Done!");
-        return {};
+    $(onload);
+*/
+    //    return {};
 });
