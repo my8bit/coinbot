@@ -1,0 +1,8 @@
+.calcResults span {
+    padding-left: 10px;
+}
+/*Initially hide modules DEVELOPMENT ONLY*/
+
+.calcInputs, .manualTrade, #embeddedChart {
+    display: none;
+}

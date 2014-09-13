@@ -1,0 +1,17 @@
+{
+  // Details: https://github.com/victorporof/Sublime-JSHint#using-your-own-jshintrc-options
+  // Example: https://github.com/jshint/jshint/blob/master/examples/.jshintrc
+  // Documentation: http://www.jshint.com/docs/
+  "browser": true,
+  "esnext": true,
+  "globals": { 
+    "console": true, //debugg variables
+    "require": true, "requirejs": true, "define": true, //requirejs variables
+    "process": true, "exports": true, "__dirname": true, //Node.js internal
+    "$": true //jQuery
+  },
+  "globalstrict": true,
+  "quotmark": true,
+  "undef": true,
+  "unused": true
+}
