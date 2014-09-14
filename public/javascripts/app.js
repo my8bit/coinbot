@@ -70,15 +70,14 @@ requirejs([
         $(installWidget);
 
         function installWidget() {
-            //var TradingView = TradingView || {};
-            //delete widows.TradingView;
+            //TODO CONFIGURE WIDGET
             new TradingView.widget({
                 'container_id': 'embeddedChart',
-                'width': 1170,
+                'width': 1140,
                 'height': 288,
-                'symbol': 'LTCUSD',
+                'symbol': 'BTCE:LTCUSD',
                 'interval': '1',
-                'timezone': 'exchange',
+                'timezone': 'UTC',
                 'theme': 'White',
                 'style': '1',
                 'toolbar_bg': '#f1f3f6',

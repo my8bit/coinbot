@@ -3,9 +3,21 @@ extends layout
 block header
   //h1= title
   //p Welcome to #{title}
-  .page-header 
-    h4 Coinbot. Opensource bot for btc-e
-    h5(id='currency') Here is the currency (LTC/USD) at the moment
+  .page-header
+    .row
+      .col-xs-3
+        h4 Coinbot. Opensource bot for btc-e. 
+          small#currency Here is the currency (LTC/USD) at the moment
+      .col-xs-3
+        h4 Coinbot. Opensource bot for btc-e. 
+          small Here is the currency (LTC/USD) at the moment
+      .col-xs-6
+        h4
+          form(class='form-inline' role='form' class='login pull-right')
+            div(class='form-group input-group-sm')
+              input(type='text', class='form-control', placeholder='Please input YourApiKey here \u2026')
+              input(type='text', class='form-control', placeholder='and here YourSecretKey, and then press \u23CE')
+              //button.btn.btn-xs.btn-info(type='button') Login
 
 block manualTrade
   h4(id='toggleManualBuy') Manual buy / sell coins here 

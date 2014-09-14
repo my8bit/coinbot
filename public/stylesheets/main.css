@@ -6,3 +6,12 @@
 .calcInputs, .manualTrade, #embeddedChart {
     display: none;
 }
+
+#widget-container {
+    border: none;
+}
+
+.login input.form-control {
+    margin-right: 5px;
+    width: 260px;
+}
