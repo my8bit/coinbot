@@ -3,16 +3,17 @@ extends layout
 block header
   //h1= title
   //p Welcome to #{title}
-  .page-header
+  .page-header#header
     .row
       .col-xs-3
-        h4 Coinbot. Opensource bot for btc-e. 
-          small#currency Here is the currency (LTC/USD) at the moment
+        h3 Coin
+          span(class='fa fa-bitcoin')
+          span ot 
+          p
+            small#currency Currency (LTC/USD) at the moment
       .col-xs-3
-        h4 Coinbot. Opensource bot for btc-e. 
-          small Here is the currency (LTC/USD) at the moment
       .col-xs-6
-        h4
+        h3
           form(class='form-inline' role='form' class='login pull-right')
             div(class='form-group input-group-sm')
               input(type='text', class='form-control', placeholder='Please input YourApiKey here \u2026')
@@ -20,7 +21,9 @@ block header
               //button.btn.btn-xs.btn-info(type='button') Login
 
 block manualTrade
-  h4(id='toggleManualBuy') Manual buy / sell coins here 
+  h4(id='toggleManualBuy') 
+    div(class='fa fa-calculator')  Calculate profit and manualy buy or sell some coins. 
+      small(class='fa fa-toggle-on') 
   .row.manualTrade
     .col-xs-6.col-sm-3
       p Calculate the profit with buying some coins:
@@ -61,6 +64,21 @@ block manualTrade
         p
           button.btn.btn-sm.btn-info.col-lg-12(type='button') Sell
 
+block autorules
+  h4(id='toggleRules') 
+    div(class='fa fa-gears')  Automatic rules 
+      small(class='fa fa-toggle-on')
+  p.autoRules
+    textarea(class='form-control' rows="5")
+
+block chart
+  h4(id='toggleChart') 
+    div(class='fa fa-line-chart')  Embedded chart 
+      small(class='fa fa-toggle-on') 
+  p
+    div#embeddedChart hello
+
+
 //block calculator
   h4(id='toggleCalculator') Calculator 
   .row.calcInputs
@@ -86,15 +104,3 @@ block manualTrade
       p
         div Profit / Loss:
           span(id='profitLoss')
-
-block autorules
-  h4(id='toggleRules') Automatic rules 
-  p.autoRules
-    textarea(class='form-control' rows="5")
-
-block chart
-  h4(id='toggleChart') Embedded chart 
-  p
-    div#embeddedChart hello
-
-

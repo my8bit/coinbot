@@ -49,9 +49,30 @@ requirejs([
             setToggle($('#toggleRules'), $('.autoRules'));
             setToggle($('#toggleChart'), $('#embeddedChart'));
 
+            var curr = $('#currency');
+            var value = 0;
+            curr.text(curr.text() + value);
+            /*
+ЕМА(С) = EMA(C-1)+((ЦЕНА(С)- ЕМА(С-1))*К). 
+теперь необходимо разобраться в этой формуле. 
+С – означает сегодняшний день. 
+С-1 – вчерашний день. 
+К=2/(Х+1), 
+где х – заданный период средней.
+            */
+
+
             function setToggle(toggleButton, toggleTarget) {
                 toggleButton.click(function() {
                     toggleTarget.slideToggle('slow');
+                    var small = toggleButton.find('small.fa');
+                    if (small.hasClass('fa-toggle-off')) {
+                        small.removeClass('fa-toggle-off');
+                        small.addClass('fa-toggle-on');
+                    } else {
+                        small.removeClass('fa-toggle-on');
+                        small.addClass('fa-toggle-off');
+                    }
                 });
             }
         }
@@ -76,14 +97,18 @@ requirejs([
                 'width': 1140,
                 'height': 288,
                 'symbol': 'BTCE:LTCUSD',
+                //'watchlist': ['BTCE:LTCUSD'], //
                 'interval': '1',
                 'timezone': 'UTC',
                 'theme': 'White',
                 'style': '1',
+                //'hide_top_toolbar': true, //DEV
+                //'save_image': false, //
                 'toolbar_bg': '#f1f3f6',
                 'allow_symbol_change': true,
                 'hideideas': true,
-                'show_popup_button': true,
+                'show_popup_button': true, // DEV
+                //'show_popup_button': false,
                 'popup_width': '1000',
                 'popup_height': '650'
             });
