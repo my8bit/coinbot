@@ -7,7 +7,7 @@
   "globals": { 
     "console": true, //debugg variables
     "require": true, "requirejs": true, "define": true, //requirejs variables
-    "process": true, "exports": true, "__dirname": true, //Node.js internal
+    "process": true, "module": true, "exports": true, "__dirname": true, //Node.js internal
     "$": true //jQuery
   },
   "globalstrict": true,
