@@ -10,7 +10,9 @@
 #widget-container {
     border: none;
 }
-
+#toggleManualBuy, #toggleChart, #toggleRules {
+    cursor: pointer;
+}
 .login input.form-control {
     margin-right: 5px;
     width: 260px;
