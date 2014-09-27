@@ -5,13 +5,13 @@ block header
   //p Welcome to #{title}
   .page-header#header
     .row
-      .col-xs-3
+      .col-xs-6
         h3 Coin
           span(class='fa fa-bitcoin')
           span ot 
-          p
-            small#currency Currency (LTC/USD) at the moment
-      .col-xs-3
+            //small#currency Currency now 
+            //small#percentageChange Today percentage 
+      //.col-xs-3
       .col-xs-6
         h3
           form(class='form-inline' role='form' class='login pull-right')
@@ -36,8 +36,8 @@ block manualTrade
     .col-xs-6.col-sm-3.calcResults 
       p Results of calculation:
       p
-        div Profit treshhold:
-          span(id='treshHold')
+        div Profit treshold:
+          span(id='treshold')
       p
         div Money spend:
           span(id='moneySpend')
@@ -54,7 +54,7 @@ block manualTrade
       p(class='input-group input-group-sm col-lg-12')
         input(type='text', class='form-control', id='buyPrice', placeholder='Price …')
       p
-        button.btn.btn-sm.btn-info.col-lg-12(type='button') Buy
+        button.btn.btn-sm.btn-info.col-lg-12(id='buyButton' type='button') Buy
     .col-xs-6.col-sm-3
       p Sell coins
         p(class='input-group input-group-sm col-lg-12')
@@ -62,7 +62,7 @@ block manualTrade
         p(class='input-group input-group-sm col-lg-12')
           input(type='text', class='form-control', id='sellPrice', placeholder='Price …')
         p
-          button.btn.btn-sm.btn-info.col-lg-12(type='button') Sell
+          button.btn.btn-sm.btn-info.col-lg-12(id='sellButton' type='button') Sell
 
 block autorules
   h4(id='toggleRules') 
@@ -79,28 +79,37 @@ block chart
     div#embeddedChart hello
 
 
-//block calculator
-  h4(id='toggleCalculator') Calculator 
-  .row.calcInputs
-    .col-xs-6
-      p Calculate the profit with buying some coins:
-      p(class='input-group input-group-sm col-lg-6')
-        input(type='text', class='form-control calcFields' id='buyPriceCalc', placeholder='Amount of coins to buy ..')
-      p(class='input-group input-group-sm col-lg-6')
-        input(type='text', class='form-control calcFields' id='priceCalc', placeholder='At the price ...')
-      p(class='input-group input-group-sm col-lg-6')
-        input(type='text', class='form-control calcFields' id='sellPriceCalc', placeholder='At the price ...')
-    .col-xs-6.calcResults 
-      p Results of calculation:
+block info
+  h4(id='toggleInfo')
+    div(class='fa fa-gears')  Information 
+      small(class='fa fa-toggle-on') 
+  .row.infoContainer
+    .col-xs-6.col-sm-3
+      div Currency is: 
+          span(id='currency')
       p
-        div Profit treshhold:
-          span(id='treshHold')
-      p
-        div Money spend:
-          span(id='moneySpend')
+        div Percentage change:
+          span(id='percentageChange')
       p
         div Money recieved:
-          span(id='moneyRcivd')
+          span(class='moneyRcivd')
       p
         div Profit / Loss:
-          span(id='profitLoss')
+          span(class='profitLoss')
+    .col-xs-6.col-sm-3
+        div(class='input-group input-group-sm col-lg-12')  
+          label.input-group-addon Amount of orders:
+          input(type='text', class='form-control', id='wqewqe', placeholder='Amount of coins 0…')
+        p
+          div(class='input-group input-group-sm col-lg-12')  
+            label.input-group-addon Count of orders:
+            input(type='text', class='form-control', id='kjsdnvnqw', placeholder='Amount of coins 0…')
+        p
+          div(class='input-group input-group-sm col-lg-12')  
+            label.input-group-addon Time to live:
+            input(type='text', class='form-control', id='qwqwe', placeholder='Amount of coins 0…')
+    .col-xs-6.col-sm-6
+      div(style="height: 120px; overflow-y: scroll;")
+        table(class="table table-striped table-condensed table-hover" id="orderTable" style="width:100%;")
+          tr.header
+            th Loading orders table...

@@ -1,4 +1,53 @@
-.calcResults span {
+/*
+tr:nth-child(even) {
+    background-color: #eeeeee;
+}*/
+/*
+tr.header {
+    font-weight: bold; 
+    background-color: #75caeb;
+}
+#orderTable tr {
+
+}
+*/
+/*
+.header {
+    position: fixed;
+}*/
+.flash {
+
+  -moz-animation: flash 1s ease-out;
+  -moz-animation-iteration-count: infinite;
+
+  -webkit-animation: flash 1s ease-out;
+  -webkit-animation-iteration-count: infinite;
+
+  -ms-animation: flash 1s ease-out;
+  -ms-animation-iteration-count: infinite;
+
+}
+
+@-webkit-keyframes flash {
+    0% { background-color:none;}
+    50% { background-color: red;}        
+    100% {background-color:none;}
+}
+
+@-moz-keyframes flash {
+    0% { background-color:none;}
+    50% { background-color: red;}        
+    100% {background-color:none;}
+}
+
+@-ms-keyframes flash {
+    0% { background-color:none;}
+    50% { background-color: red;}        
+    100% {background-color:none;}
+}
+
+.calcResults span,
+.infoContainer span {
     padding-left: 10px;
 }
 /*Initially hide modules DEVELOPMENT ONLY*/
@@ -10,7 +59,7 @@
 #widget-container {
     border: none;
 }
-#toggleManualBuy, #toggleChart, #toggleRules {
+#toggleManualBuy, #toggleChart, #toggleRules, #toggleInfo {
     cursor: pointer;
 }
 .login input.form-control {
