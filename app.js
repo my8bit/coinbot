@@ -15,8 +15,10 @@ var app = express();
 var server = http.createServer(app);
 
 // all environments
-app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 8080);
-app.set('ipaddress', process.env.OPENSHIFT_NODEJS_IP || 'localhost');
+var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || 'localhost';
+app.set('port', port);
+app.set('ipaddress', ip);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
