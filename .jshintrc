@@ -9,7 +9,7 @@
     "require": true, "requirejs": true, "define": true, //requirejs variables
     "process": true, "module": true, "exports": true, "__dirname": true, //Node.js internal
     "$": true,  //jQuery
-    "describe": true, "it": true //Mocha, Chai
+    "describe": true, "beforeEach": true, "it": true //Mocha, Chai
   },
   "globalstrict": true,
   "quotmark": true,

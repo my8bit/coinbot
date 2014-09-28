@@ -43,9 +43,12 @@ exports.init = function(server) {
                 });
             }
             getCurrencyWithInterval();
-            upadteOrder();
+            //upadteOrder();
             //getAllOrders(socket);
-
+            setTimeout(function() {
+                getAllOrders(socket);
+            }, 2100);
+            /*
             function upadteOrder() {
                 btceTrade.activeOrders('ltc_usd', function(err, data) {
                     //console.log(data);
@@ -55,10 +58,20 @@ exports.init = function(server) {
                 });
             }
 
-            //var getCurrencyInterval = setInterval(getCurrencyWithInterval, 10000);
+*/ //var getCurrencyInterval = setInterval(getCurrencyWithInterval, 10000);
             //var updateOrderInterval = setInterval(upadteOrder, 10000);
         });
 
+        function getAllOrders(socket) {
+            //console.log('GETALLORDERS');
+            btceTrade.activeOrders('ltc_usd', function(err, data) {
+                if (err) console.log(err);
+                console.log(data);
+                socket.emit('updateOrders', {
+                    data: data
+                });
+            });
+        }
 
         socket.on('giveMeActiveOrders', function() {
             btceTrade.activeOrders('ltc_usd', function(err, data) {
@@ -85,14 +98,7 @@ exports.init = function(server) {
             }, 2100);
         });
 
-        function getAllOrders(socket) {
-            btceTrade.activeOrders('ltc_usd', function(err, data) {
-                console.log(data);
-                socket.emit('updateOrders', {
-                    data: data
-                });
-            });
-        }
+
         //cancelOrderNo
         socket.on('buyCoins', function(data) {
             var rate = parseFloat(data.rate).toFixed(5),

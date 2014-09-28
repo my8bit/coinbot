@@ -26,21 +26,43 @@ var options = {
     'force new connection': true
 };
 
-var chatUser1 = {
-    'name': 'Tom'
-};
 
-describe('Chat Server', function() {
+describe('Sockets on server', function() {
     /* Test 1 - A Single User */
-    it('Should broadcast new user once they connect', function() {
+    it('should recive ticker on connect', function() {
         var client = io.connect(socketURL, options);
         client.emit('fromClient', {
             msg: 'Emitted from client'
         });
         client.on('updateCurrency', function(data) {
+            assert.isDefined(data.hasOwnProperty('ticker'));
+        });
+        client.on('updateOrders', function(data) {
             console.log(data);
-            assert.ok(true, data.hasOwnProperty('ticker'));
+            assert.isDefined(data.data);
         });
 
     });
+
+    it('should do magic', function() {
+        //buySellFn.init(server);
+    });
+
+});
+
+describe('buySellFn module test', function() {
+    /*
+    var buySellFn = require('./../buysellfn');
+
+    var express = require('express');
+    var http = require('http');
+    var app = express();
+    var server = http.createServer(app);
+    beforeEach(function() {
+        server = http.createServer(app);
+    });
+    it('should do magic', function() {
+        buySellFn.init(server);
+    });
+*/
 });
