@@ -26,11 +26,6 @@ requirejs([
     (function() {
         $(generalUI);
 
-        calculator.init();
-        manualTrade.init();
-        var io = socketio();
-        var socket = io.connect();
-
         function generalUI() {
             setToggle($('#toggleManualBuy'), $('.manualTrade'));
             setToggle($('#toggleRules'), $('.autoRules'));
@@ -78,7 +73,10 @@ requirejs([
         }
     })();
 
-
+    calculator.init();
+    manualTrade.init();
+    var io = socketio();
+    var socket = io.connect();
 
     // if we get an 'info' emit from the socket server then console.log the data we recive
     socket.on('info', function(data) {
