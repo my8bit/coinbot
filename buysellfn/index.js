@@ -10,6 +10,15 @@ exports.init = function(server) {
         btcePublic = new BTCE();
 
     io.sockets.on('connection', function(socket) {
+        function getAllOrders() {
+            btceTrade.activeOrders('ltc_usd', function(err, data) {
+                if (err) console.log(err);
+                console.log(data);
+                socket.emit('updateOrders', {
+                    data: data
+                });
+            });
+        }
         socket.on('fromClient', function() {
             function getCurrencyWithInterval() {
                 btcePublic.ticker('ltc_usd', function(err, data) {
@@ -26,20 +35,15 @@ exports.init = function(server) {
                 });
             }
             getCurrencyWithInterval();
+            //getAllOrders(socket);
+            getAllOrders(); // Try without socket
+            /*
             setTimeout(function() {
-                getAllOrders(socket);
+                //getAllOrders(socket);
             }, 2100);
+            */
         });
 
-        function getAllOrders(socket) {
-            btceTrade.activeOrders('ltc_usd', function(err, data) {
-                if (err) console.log(err);
-                console.log(data);
-                socket.emit('updateOrders', {
-                    data: data
-                });
-            });
-        }
 
         socket.on('giveMeActiveOrders', function() {
             btceTrade.activeOrders('ltc_usd', function(err, data) {
