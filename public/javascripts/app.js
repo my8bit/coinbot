@@ -15,7 +15,6 @@ require.config({
     }
 });
 
-
 requirejs([
     'jquery',
     'bootstrap',
@@ -23,61 +22,24 @@ requirejs([
     'calculator',
     'manualTrade'
 ], function($, bootstrap, socketio, calculator, manualTrade) {
-    //this is where all the site code should begin
-    //var socket = socketio.connect(); 
-
-    /*
-     * Probably need to move on separate module
-     * Some general UI
-     */
+    // Fix Probably need to move on separate module
     (function() {
         $(generalUI);
 
+        calculator.init();
+        manualTrade.init();
+        var io = socketio();
+        var socket = io.connect();
+
         function generalUI() {
-            /*
-            var manualTrade = $('.manualTrade');
-            var calcInputs = $('.calcInputs');
-            var autoRules = $('.autoRules');
-
-            var toggleRulesButton = $('#toggleRules');
-            var toggleManualBuyButton = $('#toggleManualBuy');
-            var toggleCalculatorButton = $('#toggleCalculator');
-            */
-
             setToggle($('#toggleManualBuy'), $('.manualTrade'));
-            //setToggle($('#toggleCalculator'), $('.calcInputs'));
             setToggle($('#toggleRules'), $('.autoRules'));
             setToggle($('#toggleChart'), $('#embeddedChart'));
             setToggle($('#toggleInfo'), $('.infoContainer'));
-            /*
-            var curr = $('#currency');
-            var value = 0;
-            curr.text(curr.text() + value);
-            */
             installWidget();
-            /*
-            ЕМА(С) = EMA(C-1)+((ЦЕНА(С)- ЕМА(С-1))*К). 
-            теперь необходимо разобраться в этой формуле. 
-            С – означает сегодняшний день. 
-            С-1 – вчерашний день. 
-            К=2/(Х+1), 
-            где х – заданный период средней.
-            */
 
             function installWidget() {
-
-                /*CrossHair.prototype.setPosition = function(a, b, c) {
-                    this._subscribed || (this._model.mainSeries().onRestarted().subscribe(this, CrossHair.prototype.clearMeasure), this._subscribed = !0);
-                    this.index = a;
-                    this.x = this._model.timeScale().indexToCoordinate(a);
-                    c && !c.defaultPriceScale().isEmpty() ? (this.price = b, this.y = c.defaultPriceScale().priceToCoordinate(b), this.pane = c) : (this.y = this.price = NaN, this.pane = null);
-                    this.visible = !0;
-                    console.log(this.price);
-                    this.updateAllViews()
-                };*/
                 //TODO CONFIGURE WIDGET
-
-                /*window.tvChart = */
                 new window.TradingView.widget({
                     'container_id': 'embeddedChart',
                     'width': 1140,
@@ -98,7 +60,6 @@ requirejs([
                     'popup_width': '1000',
                     'popup_height': '650'
                 });
-                //console.log(tvChart);
             }
 
             function setToggle(toggleButton, toggleTarget) {
@@ -115,18 +76,9 @@ requirejs([
                 });
             }
         }
-
     })();
 
-    calculator.init();
-    manualTrade.init();
 
-
-    /*
-     * TURN OFF SOCKET WHILE FRONT-END
-     */
-    var io = socketio();
-    var socket = io.connect();
 
     // if we get an 'info' emit from the socket server then console.log the data we recive
     socket.on('info', function(data) {
@@ -151,14 +103,12 @@ requirejs([
             msg: 'Emitted from client'
         });
         socket.on('updateCurrency', function(data) {
-            //console.log(data);
             var price = data.cur.ticker.last.toFixed(3);
             $('#currency').text(price);
             console.log(data.cur.ticker);
             $('#percentageChange').text(getPercent(data.cur.ticker.high, data.cur.ticker.low).toFixed(3));
             $('#sellPrice').attr('placeholder', price);
             $('#buyPrice').attr('placeholder', price);
-
         });
         document.getElementById('buyButton').addEventListener('click', clickToBuyButton, false);
         $('#orderTable').on('click', '.cancelLinks', function() {
@@ -169,6 +119,7 @@ requirejs([
                 orderNumber: this.id
             });
         });
+
         socket.on('yourOrdersIs', function(data) {
             console.log(data);
         });
@@ -177,15 +128,6 @@ requirejs([
             console.log('This is orders above');
             console.log(data);
             updateTable(data);
-            /*
-"order_id":343154,
-        "funds":{
-            "usd":325,
-            "btc":24.998,
-            "ltc":0,
-            ...
-        }
-            */
         });
     }
 
@@ -193,38 +135,7 @@ requirejs([
         if (!data.data) {
             $('#orderTable').find('tr:not(.header)').remove();
             $('#orderTable').find('th').text('You don\'t have an orders.');
-            //$('#orderTable').find('tr.header').append('<th>You don\'t have an orders.</th>');
         } else {
-            /*
-            th Pair
-            th Type
-            th Price
-            th Amount
-            th Total
-            th Cancel
-        */
-            /*
-{
-    "data": {
-        "386821124": {
-            "pair": "ltc_usd",
-            "type": "buy",
-            "amount": 0.1,
-            "rate": 2,
-            "timestamp_created": 1411803718,
-            "status": 0
-        },
-        "386821365": {
-            "pair": "ltc_usd",
-            "type": "buy",
-            "amount": 0.1,
-            "rate": 0.5,
-            "timestamp_created": 1411803741,
-            "status": 0
-        }
-    }
-}
-        */
             $('#orderTable').find('tr').remove();
 
             var arrayOfCells = [];
@@ -277,10 +188,6 @@ requirejs([
     }
 
     function clickToBuyButton() {
-        /*socket.emit('giveMeActiveOrders', {
-            msg: 'Emitted from client'
-        });
-        */
         var rate = $('#buyPrice').val();
         var amount = $('#buyAmount').val();
         rate = parseFloat(rate);
