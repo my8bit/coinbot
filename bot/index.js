@@ -15,6 +15,7 @@ botEvents.on('change', function(data) {
     console.log('Emited');
     console.log(data);
     //this.trade()
+
 });
 
 botEvents.on('buy', function(data) {
