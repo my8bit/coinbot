@@ -97,9 +97,11 @@ requirejs([
         socket.on('toClient', function(data) {
             console.log(data);
         });
+        /*
         socket.emit('fromClient', {
             msg: 'Emitted from client'
         });
+        */
         socket.on('updateCurrency', function(data) {
             var price = data.cur.ticker.last.toFixed(3);
             $('#currency').text(price);
@@ -129,23 +131,41 @@ requirejs([
         });
     }
 
-    function updateTable(data) {
-        if (!data.data) {
-            $('#orderTable').find('tr:not(.header)').remove();
-            $('#orderTable').find('th').text('You don\'t have an orders.');
-        } else {
-            $('#orderTable').find('tr').remove();
+    function createHeader() {
+        var tr = $('#ordersTable');
+        if (tr.length) return tr;
+        tr = document.createElement('tr');
+        tr.className = 'header';
+        tr.id = 'ordersTable';
+        tr.appendChild(createTh('Pair'));
+        tr.appendChild(createTh('Type'));
+        tr.appendChild(createTh('Price'));
+        tr.appendChild(createTh('Amount'));
+        tr.appendChild(createTh('Total'));
+        tr.appendChild(createTh('Cancel'));
+        return tr;
+    };
 
+    function createTr(key, type) {
+        var td = document.createElement('td');
+        td.textContent = key[type];
+        return td;
+    }
+
+    function createTh(tectContent) {
+        var th = document.createElement('th');
+        th.textContent = tectContent;
+        return th;
+    }
+
+    function updateTable(data) {
+        $('#orderTable').find('tr').remove();
+        if (!data.data) {
+            $('#orderTable').append(createHeader());
+            //$('#orderTable').append('<tr><td>You don\'t have an active orders</td></tr>');
+        } else {
             var arrayOfCells = [];
-            var tr = document.createElement('tr');
-            tr.className = 'header';
-            tr.appendChild(createTh('Pair'));
-            tr.appendChild(createTh('Type'));
-            tr.appendChild(createTh('Price'));
-            tr.appendChild(createTh('Amount'));
-            tr.appendChild(createTh('Total'));
-            tr.appendChild(createTh('Cancel'));
-            arrayOfCells.push(tr);
+            arrayOfCells.push(createHeader());
 
             $.each(data.data, function(key) {
                 var obj = data.data[key];
@@ -171,21 +191,10 @@ requirejs([
                 $('#orderTable').append(el);
             });
         }
-
-        function createTr(key, type) {
-            var td = document.createElement('td');
-            td.textContent = key[type];
-            return td;
-        }
-
-        function createTh(tectContent) {
-            var th = document.createElement('th');
-            th.textContent = tectContent;
-            return th;
-        }
     }
 
     function clickToBuyButton() {
+        //Fix make inacteve for 2 sec
         var rate = $('#buyPrice').val();
         var amount = $('#buyAmount').val();
         rate = parseFloat(rate);

@@ -3,22 +3,21 @@
 exports.init = function(server) {
     var io = require('socket.io').listen(server),
         moment = require('moment'),
-        BTCE = require('btc-e'),
-        btceTrade = new BTCE('L132OH51-YP3R4SGN-J285DJBI-LIIMAX16-RPBMBDEO',
-            '628748972e63c5ee6dd77cad2eabad76d6a8031b0267c055426734d378a8574e'
-        ),
-        btcePublic = new BTCE();
+        btceTrade = require('./../exchangeAuth').btceTrade,
+        btcePublic = require('./../exchangeAuth').btcePublic,
+        bot = require('./../bot')
 
     io.sockets.on('connection', function(socket) {
         function getAllOrders() {
             btceTrade.activeOrders('ltc_usd', function(err, data) {
                 if (err) console.log(err);
-                console.log(data);
+                //console.log(data);
                 socket.emit('updateOrders', {
                     data: data
                 });
             });
         }
+
         socket.on('fromClient', function() {
             function getCurrencyWithInterval() {
                 btcePublic.ticker('ltc_usd', function(err, data) {
@@ -35,23 +34,8 @@ exports.init = function(server) {
                 });
             }
             getCurrencyWithInterval();
-            //getAllOrders(socket);
-            getAllOrders(); // Try without socket
-            /*
-            setTimeout(function() {
-                //getAllOrders(socket);
-            }, 2100);
-            */
-        });
-
-
-        socket.on('giveMeActiveOrders', function() {
-            btceTrade.activeOrders('ltc_usd', function(err, data) {
-                console.log(data);
-                socket.emit('yourOrdersIs', {
-                    data: data
-                });
-            });
+            var currencyInterval = setInterval(getCurrencyWithInterval, 10000);
+            getAllOrders();
         });
 
         socket.on('cancelOrderNo', function(data) {
@@ -64,10 +48,12 @@ exports.init = function(server) {
                     console.log('But no respond');
                 }
                 if (err) console.log(err);
+                setTimeout(getAllOrders, 2100);
             });
-            setTimeout(function() {
+            /*setTimeout(function() {
                 getAllOrders(socket);
-            }, 2100);
+            }, 2100);*/
+            //getAllOrders();
         });
 
         socket.on('buyCoins', function(data) {
@@ -82,9 +68,10 @@ exports.init = function(server) {
                 }
                 console.log('Order was created');
                 console.log(data);
-                setTimeout(function() {
+                /*setTimeout(function() {
                     getAllOrders(socket);
-                }, 2100);
+                }, 2100);*/
+                setTimeout(getAllOrders, 2100);
             });
         });
     });
