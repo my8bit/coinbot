@@ -20,6 +20,7 @@ app.set('ipaddress', process.env.OPENSHIFT_NODEJS_IP || 'localhost');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(express.basicAuth('my8bit', 'SoM87Pazz'));
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
