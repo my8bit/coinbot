@@ -36,15 +36,17 @@ module.exports = function(grunt) {
         },
         blanket: {
             coverage: {
-                src: ['public/javascripts/'],
-                dest: 'coverage/src/'
+                src: ['public/javascripts/']
+                /*,
+                dest: 'coverage/src/'*/
             }
         },
         mochaTest: {
             test: {
                 options: {
-                    reporter: 'spec',
-                    require: 'coverage/blanket'
+                    reporter: 'spec'
+                    /*,
+                    require: 'coverage/blanket'*/
                 },
                 src: ['test/**/*.js']
             },
