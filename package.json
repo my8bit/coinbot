@@ -27,7 +27,8 @@
     "socket.io": "latest",
     "jade": "*",
     "btc-e": "latest",
-    "moment": "latest"
+    "moment": "latest",
+    "underscore": "~1.7.0"
   },
   "config": {
     "blanket": {

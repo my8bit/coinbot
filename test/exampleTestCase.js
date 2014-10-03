@@ -51,7 +51,7 @@ describe('Sockets on server', function() {
 });
 
 describe('buySellFn module test', function() {
-    /*
+
     var buySellFn = require('./../buysellfn');
 
     var express = require('express');
@@ -64,5 +64,5 @@ describe('buySellFn module test', function() {
     it('should do magic', function() {
         buySellFn.init(server);
     });
-*/
+
 });
