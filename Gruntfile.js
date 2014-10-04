@@ -88,6 +88,16 @@ module.exports = function(grunt) {
                 reporterOutput: 'jshint-report.html'
             },
             all: ['test/*.js']
+        },
+        dropbox: {
+            options: {
+                access_token: process.env.DROPBOX
+            },
+            dev: {
+                files: {
+                    'reprot/mycoinbot': ['*.html'],
+                }
+            }
         }
     });
     // 3. Where we tell Grunt we plan to use this plug-in.
@@ -99,8 +109,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-todo');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-dropbox');
 
     // 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
-    grunt.registerTask('default', ['concat', 'uglify', 'clean', 'blanket', 'copy', 'mochaTest', 'todo', 'jshint']);
+    grunt.registerTask('default', ['concat', 'uglify', 'clean', 'blanket', 'copy', 'mochaTest', 'todo', 'jshint', 'dropbox']);
 
 };
