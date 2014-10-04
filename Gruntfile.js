@@ -1,8 +1,6 @@
 module.exports = function(grunt) {
-    // 1. All configuration goes here 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-
         concat: {
             // 2. Configuration for concatinating files goes here.
             dist: {
@@ -12,8 +10,7 @@ module.exports = function(grunt) {
                 dest: 'build/production.js',
             },
             options: {
-                /*                sourceMap: true,
-                sourceMapName: 'build/production-map.js'*/
+                /*sourceMap: true, sourceMapName: 'build/production-map.js'*/
             }
         },
         uglify: {
@@ -35,17 +32,13 @@ module.exports = function(grunt) {
         },
         blanket: {
             coverage: {
-                src: ['public/javascripts/']
-                /*,
-                dest: 'coverage/src'*/
+                src: ['public/javascripts/'] /*,dest: 'coverage/src'*/
             }
         },
         mochaTest: {
             test: {
                 options: {
-                    reporter: 'spec'
-                    /*,
-                    require: 'coverage/blanket'*/
+                    reporter: 'spec' /*,require: 'coverage/blanket'*/
                 },
                 src: ['test/**/*.js']
             },
@@ -81,7 +74,11 @@ module.exports = function(grunt) {
                 usePackage: true
             },
             src: [
-                'test/*'
+                'test/*',
+                'public/javascripts/**/*.js',
+                'buysellfn/*',
+                'exchangeAuth/*',
+                'bot/*'
             ]
         },
         jshint: {
