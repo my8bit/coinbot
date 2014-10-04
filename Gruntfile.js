@@ -13,8 +13,7 @@ module.exports = function(grunt) {
             },
             options: {
                 /*                sourceMap: true,
-                sourceMapName: 'build/production-map.js'
-*/
+                sourceMapName: 'build/production-map.js'*/
             }
         },
         uglify: {
