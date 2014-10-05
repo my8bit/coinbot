@@ -32,13 +32,16 @@ module.exports = function(grunt) {
         },
         blanket: {
             coverage: {
-                src: ['public/javascripts/'] /*,dest: 'coverage/src'*/
+                src: ['public/javascripts/calculator', 'public/javascripts/manualTrade'],
+                dest: 'coverage/src'
             }
         },
         mochaTest: {
             test: {
                 options: {
-                    reporter: 'spec' /*,require: 'coverage/blanket'*/
+                    reporter: 'spec' //,
+                    /*,require: 'coverage/blanket'*/
+                    //require: 'node_modules/blanket/dist/mocha'
                 },
                 src: ['test/**/*.js']
             },
@@ -51,7 +54,7 @@ module.exports = function(grunt) {
                     // output (the quiet option does not suppress this)
                     captureFile: 'coverage.html'
                 },
-                src: ['test/**/*.js']
+                src: ['test/**/*.js', 'coverage/src']
             }
         },
         todo: {
@@ -95,7 +98,7 @@ module.exports = function(grunt) {
             },
             dev: {
                 files: {
-                    'reprot/mycoinbot': ['*.html'],
+                    'Public/mycoinbot/reports': ['*.html'],
                 }
             }
         }

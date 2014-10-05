@@ -1,8 +1,6 @@
 extends layout
 
 block header
-  //h1= title
-  //p Welcome to #{title}
   .page-header#header
     .row
       .col-xs-6
@@ -63,13 +61,6 @@ block manualTrade
           input(type='text', class='form-control', id='sellPrice', placeholder='Price …')
         p
           button.btn.btn-sm.btn-info.col-lg-12(id='sellButton' type='button') Sell
-
-block autorules
-  h4(id='toggleRules') 
-    div(class='fa fa-gears')  Automatic rules 
-      small(class='fa fa-toggle-on')
-  p.autoRules
-    textarea(class='form-control' rows="5")
 
 block chart
   h4(id='toggleChart') 
