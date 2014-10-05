@@ -11,6 +11,15 @@ bot.check = function(data) {
     //    console.log(data);
 };
 
+var logError = function(err) {
+    if (err) {
+        console.log(err);
+        return true;
+    } else {
+        return false;
+    }
+};
+
 botEvents.on('change', function(price) {
     // body...
     console.log('Emited');
@@ -36,10 +45,7 @@ bot._orders = [];
 
 bot.trade = function(pair, type, rate, amount, ttl) {
     btceTrade.trade('ltc_usd', type, rate, amount, function(err, data) {
-        if (err) {
-            console.log(err);
-            return;
-        }
+        if (logError(err)) return;
         console.log('Bot was created the order No ' + data.order_id);
         bot._orders.push(data.order_id);
         botEvents.emit(type, data);
@@ -58,11 +64,36 @@ bot._lastPrice = 0;
 
 bot.ticker = function() {
     btcePublic.ticker('ltc_usd', function(err, data) {
-        if (err) console.log(err);
-        //if (data.ticker.last !== bot._lastPrice) {
+        if (logError(err)) return;
+        if (data.ticker.last !== bot._lastPrice) {
+            bot._lastPrice = data.ticker.last;
+            botEvents.emit('change', data.ticker.last);
+        }
+    });
+};
+
+bot.init = function() {
+    initPrice();
+    setTimeout(initOredrs, 2000);
+    bot._interval = setInterval(bot.ticker, 5000);
+
+};
+
+function initPrice() {
+    btcePublic.ticker('ltc_usd', function(err, data) {
+        if (logError(err)) return;
         bot._lastPrice = data.ticker.last;
-        botEvents.emit('change', data.ticker.last);
-        //}
+        console.log('Price value was inited');
+    });
+};
+
+
+
+function initOredrs() {
+    btceTrade.activeOrders('ltc_usd', function(err, data) {
+        if (logError(err)) return;
+        bot._orders = _.keys(data);
+        console.log('Orders value was inited.')
     });
 };
 
@@ -105,10 +136,7 @@ btceTrade.orderInfo({
 
 bot.getOrders = function() {
     btceTrade.activeOrders('ltc_usd', function(err, data) {
-        if (err) {
-            console.log(err);
-            return;
-        }
+        if (logError(err)) return;
         //if (data) console.log(data);
         var keys = _.keys(data);
         console.log(keys);
@@ -183,9 +211,9 @@ bot.getPriceToBuyFromPercent = function(price, percent) {
      timestamp_created: 1412067352,
      status: 0 } }
 */
-
+bot.init();
 //bot.ticker();
-setInterval(bot.ticker, 10000);
+//setInterval(bot.ticker, 10000);
 module.exports = bot;
 
 

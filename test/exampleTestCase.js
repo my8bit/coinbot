@@ -3,6 +3,9 @@
 'use strict';
 //TODO Figure out how to create a coverage
 
+//for code coverage
+require("blanket")({ /* optional options */ });
+
 //var assert = require('assert');
 var assert = require('chai').assert;
 describe('Array', function() {
