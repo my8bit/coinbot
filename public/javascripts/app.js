@@ -111,6 +111,16 @@ requirejs([
             $('#buyPrice').attr('placeholder', price);
         });
         document.getElementById('buyButton').addEventListener('click', clickToBuyButton, false);
+        document.getElementById('playButton').addEventListener('click', startBot, false);
+        document.getElementById('stopButton').addEventListener('click', stopBot, false);
+
+        function startBot(argument) {
+            // body...
+        }
+
+        function stopBot(argument) {
+            // body...
+        }
         $('#orderTable').on('click', '.cancelLinks', function() {
             //Fix this make more accurate
             $(this).parent().parent().fadeOut(2000).fadeIn(2000).fadeOut(2000).fadeIn(2000).fadeOut(2000).fadeIn(2000);

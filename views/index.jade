@@ -3,20 +3,23 @@ extends layout
 block header
   .page-header#header
     .row
-      .col-xs-6
+      .col-xs-5
         h3 Coin
           span(class='fa fa-bitcoin')
           span ot 
             //small#currency Currency now 
             //small#percentageChange Today percentage 
       //.col-xs-3
-      .col-xs-6
+      .col-xs-7
         h3
           form(class='form-inline' role='form' class='login pull-right')
             div(class='form-group input-group-sm')
               input(type='text', class='form-control', placeholder='Please input YourApiKey here \u2026')
               input(type='text', class='form-control', placeholder='and here YourSecretKey, and then press \u23CE')
-              //button.btn.btn-xs.btn-info(type='button') Login
+              button.btn.btn-xs.btn-info(type='button', id="playButton")
+                i(class='fa fa-play')
+              button.btn.btn-xs.btn-info(type='button', id="stopButton")
+                i(class='fa fa-stop')
 
 block manualTrade
   h4(id='toggleManualBuy') 

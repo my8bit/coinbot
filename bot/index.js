@@ -3,9 +3,14 @@
 var bot = {},
     events = require('events'),
     _ = require('underscore'),
+    Q = require('q'),
     botEvents = new events.EventEmitter,
     btceTrade = require('./../exchangeAuth').btceTrade,
     btcePublic = require('./../exchangeAuth').btcePublic;
+var growl = require('growl');
+//hardcoded values;
+var PRICEPERCENT = 0.35,
+    AMOUNT = 0.1;
 
 bot.check = function(data) {
     //    console.log(data);
@@ -13,7 +18,11 @@ bot.check = function(data) {
 
 var logError = function(err) {
     if (err) {
+        growl(err, {
+            title: 'fail'
+        });
         console.log(err);
+        console.trace('trace');
         return true;
     } else {
         return false;
@@ -21,17 +30,37 @@ var logError = function(err) {
 };
 
 botEvents.on('change', function(price) {
-    // body...
-    console.log('Emited');
+    console.log('Rate was changed');
     console.log(price);
-    bot.getOrders();
-    //bot.trade('ltc_usd', 'buy', bot.getPriceToBuyFromPercent(price, 0.25), 0.1);
+    var priceToSell = bot.getPriceToSellFromPercent(bot._initPrice, PRICEPERCENT),
+        priceToBuy = bot.getPriceToBuyFromPercent(bot._initPrice, PRICEPERCENT);
+
+    console.log('priceToSell ' + priceToSell + ' and priceToBuy ' + priceToBuy);
+    if (price > priceToSell) {
+        console.log('Time to sell');
+        /*        var newPriceToSell = bot.getPriceToSellFromPercent(price, PRICEPERCENT);
+        bot.trade('ltc_usd', 'buy', price, AMOUNT).then(function() {
+            bot.trade('ltc_usd', 'sell', newPriceToSell, AMOUNT);
+        });
+*/
+        bot._initPrice = price;
+        return;
+    } else if (price < priceToBuy) {
+        console.log('Time to buy');
+        bot.trade('ltc_usd', 'buy', priceToBuy, AMOUNT).then(function() {
+            bot.trade('ltc_usd', 'sell', priceToSell, AMOUNT);
+        });
+        bot._initPrice = price;
+    }
 });
 
 botEvents.on('buy', function(data) {
     // body...
     console.log('Bot bought');
     console.log(data);
+    growl(data, {
+        title: 'Bot bought'
+    });
 
     //this.trade()
 });
@@ -39,17 +68,23 @@ botEvents.on('buy', function(data) {
 botEvents.on('sell', function(data) {
     console.log('Bot sold');
     console.log(data);
+    growl(data, {
+        title: 'Bot sold'
+    });
 });
 
 bot._orders = [];
 
 bot.trade = function(pair, type, rate, amount, ttl) {
+    var deferred = Q.defer();
     btceTrade.trade('ltc_usd', type, rate, amount, function(err, data) {
         if (logError(err)) return;
         console.log('Bot was created the order No ' + data.order_id);
         bot._orders.push(data.order_id);
         botEvents.emit(type, data);
+        deferred.resolve();
     });
+    return deferred.promise;
 };
 
 bot.start = function(coinsToPlay, type, rate, ordersAmount, percent, timeToLive) {
@@ -61,32 +96,36 @@ bot.start = function(coinsToPlay, type, rate, ordersAmount, percent, timeToLive)
 //bot.start();
 
 bot._lastPrice = 0;
+bot._initPrice = false;
 
-bot.ticker = function() {
+bot.ticker = function(data) {
     btcePublic.ticker('ltc_usd', function(err, data) {
         if (logError(err)) return;
-        if (data.ticker.last !== bot._lastPrice) {
-            bot._lastPrice = data.ticker.last;
-            botEvents.emit('change', data.ticker.last);
+        if (data) {
+            var last = data.ticker.last;
+            if (!bot._initPrice) bot._initPrice = last;
+            if (last !== bot._lastPrice) {
+                bot._lastPrice = last;
+                botEvents.emit('change', last);
+            }
         }
     });
 };
 
 bot.init = function() {
-    initPrice();
-    setTimeout(initOredrs, 2000);
+    //initPrice();
+    //setTimeout(initOredrs, 2000);
     bot._interval = setInterval(bot.ticker, 5000);
-
 };
 
-function initPrice() {
+/*function initPrice() {
     btcePublic.ticker('ltc_usd', function(err, data) {
         if (logError(err)) return;
         bot._lastPrice = data.ticker.last;
+        bot._initPrice = data.ticker.last;
         console.log('Price value was inited');
     });
 };
-
 
 
 function initOredrs() {
@@ -96,7 +135,7 @@ function initOredrs() {
         console.log('Orders value was inited.')
     });
 };
-
+*/
 //bot._interval = setInterval(bot.ticker, 5000);
 
 
@@ -109,30 +148,8 @@ bot.cancel = function(orderNumber) {
         }
     });
 };
-bot._orders = [];
-/*btceTrade.tradeHistory({}, function(err, data) {
-    console.log("history");
-    console.log(data);
-});
-*/
 
-/*btceTrade.orderList({}, function(err, data) {
-    console.log("OrderInfo");
-    console.log(data);
-});
-*/
-/*
-btceTrade.orderInfo({
-    order_id: 390800720
-}, function(err, data) {
-    if (err) {
-        console.log(err);
-        return;
-    }
-    console.log("OrderInfo");
-    console.log(data);
-});
-*/
+bot._orders = [];
 
 bot.getOrders = function() {
     btceTrade.activeOrders('ltc_usd', function(err, data) {
@@ -146,21 +163,6 @@ bot.getOrders = function() {
             console.log('different');
         }
         bot._orders = keys;
-        //console.log(diff);
-        /*
-        if (diff.length) {
-            //           console.log();
-        } else {
-            //         console.log();
-        }
-        */
-        /*        botEvents.emit('updateOrders', {
-            data: data
-        });
-        if (bot._orders !== data) {
-            bot._orders = data;
-        }
-        */
     });
 };
 

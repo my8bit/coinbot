@@ -27,7 +27,8 @@
     "jade": "*",
     "btc-e": "latest",
     "moment": "latest",
-    "underscore": "~1.7.0"
+    "underscore": "~1.7.0",
+    "q": "~1.0.1"
   },
   "config": {
     "blanket": {

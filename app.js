@@ -4,23 +4,29 @@
 
 'use strict';
 
-var express = require('express');
-var routes = require('./routes');
-//var user = require('./routes/user');
-var http = require('http');
-var path = require('path');
-var buySellFn = require('./buysellfn');
+var express = require('express'),
+    routes = require('./routes'),
+    http = require('http'),
+    path = require('path'),
+    buySellFn = require('./buysellfn'),
 
-var app = express();
-var server = http.createServer(app);
+    app = express(),
+    server = http.createServer(app),
+    port = process.env.OPENSHIFT_NODEJS_PORT || 8181,
+    ipAddress = process.env.OPENSHIFT_NODEJS_IP || 'localhost',
+    basicAuthLogin = process.env.BASIC_AUTH_LOGIN,
+    basicAuthPass = process.env.BASIC_AUTH_PASS;
 
 // all environments
-app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 8181);
-app.set('ipaddress', process.env.OPENSHIFT_NODEJS_IP || 'localhost');
+app.set('port', port);
+app.set('ipaddress', ipAddress);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(express.basicAuth('my8bit', 'SoM87Pazz'));
+if (basicAuthLogin && basicAuthPass) {
+    app.use(express.basicAuth(basicAuthLogin, basicAuthPass));
+}
+
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
@@ -31,12 +37,11 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
-if ('development' == app.get('env')) {
+if ('development' === app.get('env')) {
     app.use(express.errorHandler());
 }
 
 app.get('/', routes.index);
-app.get('/getTicket', routes.getTicket);
 
 //TODO realy stupid name - refactor
 buySellFn.init(server);
