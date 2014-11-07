@@ -28,7 +28,8 @@
     "btc-e": "latest",
     "moment": "latest",
     "underscore": "~1.7.0",
-    "q": "~1.0.1"
+    "q": "~1.0.1",
+    "growl": "~1.8.1"
   },
   "config": {
     "blanket": {
