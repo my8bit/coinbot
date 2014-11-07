@@ -25,6 +25,7 @@ app.set('view engine', 'jade');
 
 if (basicAuthLogin && basicAuthPass) {
     app.use(express.basicAuth(basicAuthLogin, basicAuthPass));
+
 }
 
 app.use(express.favicon());
